@@ -30,7 +30,7 @@ from custom_directives import (IncludeDirective, GalleryItemDirective,\
 
 try:
     import torchvision
-except ImportError: # IOError, ImportError, RuntimeError, ...
+except ImportError: # IOError, ImportError, RuntimeError, OSError, ...
     import warnings
     warnings.warn('unable to load "torchvision" package')
 import pytorch_sphinx_theme
@@ -69,7 +69,7 @@ for i in range(len(sphinx_gallery_conf['examples_dirs'])):
 
     # Copy rst files from source dir to gallery dir
     for f in glob.glob(os.path.join(source_dir, '*.rst')):
-        shutil.copy(f, gallery_dir)
+        shutil.copy(f, gallery_dir) # copy files to a given folder
 
 
 # Add any paths that contain templates here, relative to this directory.
@@ -203,8 +203,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'pytorchtutorials', 'PyTorch Tutorials',
-     [author], 1)
+    (master_doc, 'pytorchtutorials', 'PyTorch Tutorials', [author], 1)
 ]
 
 
