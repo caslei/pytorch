@@ -18,7 +18,7 @@ In this tutorial, we shall go through two tasks:
 """
 
 import torch
-from torch.autograd import Function
+from torch.autograd import Function # gradient calculation
 
 ###############################################################
 # Parameter-less example
@@ -36,30 +36,28 @@ from numpy.fft import rfft2, irfft2
 
 class BadFFTFunction(Function):
 
-    def forward(self, input):
-        numpy_input = input.detach().numpy()
+    def forward(self, input): # 该函数用于实施变量间的具体计算过程
+        numpy_input = input.detach().numpy() # 仅获取当前状态值
         result = abs(rfft2(numpy_input))
         return input.new(result)
 
-    def backward(self, grad_output):
-        numpy_go = grad_output.numpy()
+    def backward(self, grad_output): # 该函数用来计算变量的梯度信息
+        numpy_go = grad_output.numpy() # Tensor转换为numpy array
         result = irfft2(numpy_go)
         return grad_output.new(result)
 
 # since this layer does not have any parameters, we can
 # simply declare this as a function, rather than as an nn.Module class
-
-
 def incorrect_fft(input):
     return BadFFTFunction()(input)
 
 ###############################################################
 # **Example usage of the created layer:**
-
+# random value from normal distribution with mean=0 and var=1
 input = torch.randn(8, 8, requires_grad=True)
 result = incorrect_fft(input)
 print(result)
-result.backward(torch.randn(result.size()))
+result.backward(torch.randn(result.size())) # 'backward': 累加参数
 print(input)
 
 ###############################################################
@@ -98,7 +96,7 @@ class ScipyConv2dFunction(Function):
         grad_output = grad_output.detach()
         input, filter, bias = ctx.saved_tensors
         grad_output = grad_output.numpy()
-        grad_bias = np.sum(grad_output, keepdims=True)
+        grad_bias = np.sum(grad_output, keepdims=True) # 'backward' ==> sum(grad)
         grad_input = convolve2d(grad_output, filter.numpy(), mode='full')
         # the previous line can be expressed equivalently as:
         # grad_input = correlate2d(grad_output, flip(flip(filter.numpy(), axis=0), axis=1), mode='full')
