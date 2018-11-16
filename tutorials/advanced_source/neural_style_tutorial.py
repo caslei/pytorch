@@ -114,7 +114,7 @@ def image_loader(image_name):
     return image.to(device, torch.float) # performs Tensor dtype / device conversion
 
 
-style_img = image_loader("./images/picasso.jpg")
+style_img = image_loader("./images/picasso.jpg") # call 'image_loader' function
 content_img = image_loader("./images/dancing.jpg")
 
 assert style_img.size() == content_img.size(), \
@@ -129,16 +129,16 @@ assert style_img.size() == content_img.size(), \
 
 unloader = transforms.ToPILImage()  # reconvert into PIL image
 
-plt.ion()
+plt.ion() # interact mode, 产生figure后，仍可进行其他操作
 
 def imshow(tensor, title=None):
     image = tensor.cpu().clone()  # we clone the tensor to not do changes on it
     image = image.squeeze(0)      # remove the fake batch dimension
     image = unloader(image)
     plt.imshow(image)
-    if title is not None:
-        plt.title(title)
+    if title is not None: plt.title(title)
     plt.pause(0.001) # pause a bit so that plots are updated
+    # 'plt.pause' function ?????
 
 
 plt.figure()
