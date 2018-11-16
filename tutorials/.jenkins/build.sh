@@ -19,6 +19,7 @@ pip install cython torch_nightly -f https://download.pytorch.org/whl/nightly/cu8
 export PATH=/opt/conda/bin:$PATH
 # pillow >= 4.2 will throw error when trying to write mode RGBA as JPEG,
 # this is a workaround to the issue.
+# package with a given version
 conda install -y sphinx==1.7.9 pandas pillow=4.1.1
 # PyTorch Theme
 rm -rf src
@@ -30,12 +31,13 @@ pushd vision
 pip install . --no-deps  # We don't want it to install the stock PyTorch version from pip
 popd
 
-git clone https://github.com/pytorch/audio --quiet
+git clone https://github.com/pytorch/audio --quiet # '--quiet' argument !!!
 pushd audio
 python setup.py install
 popd
 
 # Download dataset for beginner_source/dcgan_faces_tutorial.py
+# what is the 'curl' used for???
 curl https://s3.amazonaws.com/pytorch-tutorial-assets/img_align_celeba.zip --output img_align_celeba.zip
 sudo mkdir -p /home/ubuntu/facebook/datasets/celeba
 sudo chmod -R 0777 /home/ubuntu/facebook/datasets/celeba
