@@ -19,17 +19,18 @@
 #
 import os
 import sys
-sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('.')) # sys.path.insert() ???
 import pytorch_sphinx_theme
 import torch
 import glob
 import shutil
-from custom_directives import IncludeDirective, GalleryItemDirective, CustomGalleryItemDirective
+from custom_directives import (IncludeDirective, GalleryItemDirective,\
+                               CustomGalleryItemDirective)
 
 
 try:
     import torchvision
-except ImportError:
+except ImportError: # IOError, ImportError, RuntimeError, ...
     import warnings
     warnings.warn('unable to load "torchvision" package')
 import pytorch_sphinx_theme
@@ -43,8 +44,7 @@ import pytorch_sphinx_theme
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.mathjax',
-              'sphinx_gallery.gen_gallery']
+extensions = ['sphinx.ext.mathjax', 'sphinx_gallery.gen_gallery']
 
 
 # -- Sphinx-gallery configuration --------------------------------------------
