@@ -79,7 +79,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Loading the Images
 # ------------------
 #
-# Now we will import the style and content images. The original PIL images have values between 0 and 255, but when
+# Now we will import the style and content images. The original PIL images 
+# have values between 0 and 255, but when
 # transformed into torch tensors, their values are converted to be between
 # 0 and 1. The images also need to be resized to have the same dimensions.
 # An important detail to note is that neural networks from the
@@ -139,7 +140,7 @@ def imshow(tensor, title=None):
     if title is not None: plt.title(title)
     plt.pause(0.001) # pause a bit so that plots are updated
     # 'plt.pause' function ?????
-
+    # 'plt.title' function ?????
 
 plt.figure()
 imshow(style_img, title='Style Image')
@@ -173,6 +174,7 @@ imshow(content_img, title='Content Image')
 # parameter of the module.
 # 
 
+# derived from 'nn.Module' class
 class ContentLoss(nn.Module):
 
     def __init__(self, target,):
@@ -192,7 +194,7 @@ class ContentLoss(nn.Module):
 #    **Important detail**: although this module is named ``ContentLoss``, it
 #    is not a true PyTorch Loss function. If you want to define your content
 #    loss as a PyTorch Loss function, you have to create a PyTorch autograd function 
-#    to recompute/implement the gradient manually in the ``backward``
+#    to recompute/implement the GRADIENT manually in the ``backward``
 #    method.
 
 ######################################################################
@@ -205,8 +207,9 @@ class ContentLoss(nn.Module):
 # calculate the style loss, we need to compute the gram matrix :math:`G_{XL}`. A gram
 # matrix is the result of multiplying a given matrix by its transposed
 # matrix. In this application the given matrix is a reshaped version of
-# the feature maps :math:`F_{XL}` of a layer :math:`L`. :math:`F_{XL}` is reshaped to form :math:`\hat{F}_{XL}`, a :math:`K`\ x\ :math:`N`
-# matrix, where :math:`K` is the number of feature maps at layer :math:`L` and :math:`N` is the
+# the feature maps :math:`F_{XL}` of a layer :math:`L`. :math:`F_{XL}` is reshaped 
+# to form :math:`\hat{F}_{XL}`, a :math:`K`\ x\ :math:`N` matrix, 
+# where :math:`K` is the number of feature maps at layer :math:`L` and :math:`N` is the
 # length of any vectorized feature map :math:`F_{XL}^k`. For example, the first line
 # of :math:`\hat{F}_{XL}` corresponds to the first vectorized feature map :math:`F_{XL}^1`.
 # 
@@ -220,17 +223,19 @@ class ContentLoss(nn.Module):
 # 
 
 def gram_matrix(input):
-    a, b, c, d = input.size()  # a=batch size(=1)
-    # b=number of feature maps
-    # (c,d)=dimensions of a f. map (N=c*d)
+    a, b, c, d = input.size()  
+    # a=batch size(=1)
+    # b=number of feature maps (color channels)
+    # (c,d)=dimensions of a feature map (N=c*d)
 
     features = input.view(a * b, c * d)  # resise F_XL into \hat F_XL
+    # 'view' funciont is used for 'reshape'
 
     G = torch.mm(features, features.t())  # compute the gram product
 
     # we 'normalize' the values of the gram matrix
     # by dividing by the number of element in each feature maps.
-    return G.div(a * b * c * d)
+    return G.div(a * b * c * d) # element-wise division by (abcd)
 
 
 ######################################################################
@@ -243,11 +248,11 @@ class StyleLoss(nn.Module):
 
     def __init__(self, target_feature):
         super(StyleLoss, self).__init__()
-        self.target = gram_matrix(target_feature).detach()
+        self.target = gram_matrix(target_feature).detach() # call 'gram_matrix'
 
     def forward(self, input):
         G = gram_matrix(input)
-        self.loss = F.mse_loss(G, self.target)
+        self.loss = F.mse_loss(G, self.target) # torch.nn.functional
         return input
 
 
@@ -262,10 +267,11 @@ class StyleLoss(nn.Module):
 # ``Sequential`` modules: ``features`` (containing convolution and pooling layers),
 # and ``classifier`` (containing fully connected layers). We will use the
 # ``features`` module because we need the output of the individual
-# convolution layers to measure content and style loss. Some layers have
-# different behavior during training than evaluation, so we must set the
-# network to evaluation mode using ``.eval()``.
-# 
+# convolution layers to measure content and style loss. 
+
+# Some layers have different behavior during training than evaluation, 
+# so we must set the network to evaluation mode using ``.eval()``.
+# cnn中，存在一些网络layers在训练和评估过程中，具有不同的行为方式！！！
 
 cnn = models.vgg19(pretrained=True).features.to(device).eval()
 
