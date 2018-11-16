@@ -69,8 +69,8 @@ import copy
 # content and style images. Running the neural transfer algorithm on large
 # images takes longer and will go much faster when running on a GPU. We can
 # use ``torch.cuda.is_available()`` to detect if there is a GPU available.
-# Next, we set the ``torch.device`` for use throughout the tutorial. Also the ``.to(device)``
-# method is used to move tensors or modules to a desired device. 
+# Next, we set the ``torch.device`` for use throughout the tutorial. Also 
+# the ``.to(device)`` method is used to move tensors or modules to a desired device. 
 
 # 'torch.cuda.is_available' function 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -80,9 +80,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # ------------------
 #
 # Now we will import the style and content images. The original PIL images 
-# have values between 0 and 255, but when
-# transformed into torch tensors, their values are converted to be between
-# 0 and 1. The images also need to be resized to have the same dimensions.
+# have values between 0 and 255, but when transformed into torch tensors, 
+# their values are converted to be between 0 and 1.
+# The images also need to be resized to have the same dimensions.
 # An important detail to note is that neural networks from the
 # torch library are trained with tensor values ranging from 0 to 1. If you
 # try to feed the networks with 0 to 255 tensor images, then the activated
@@ -112,7 +112,7 @@ def image_loader(image_name):
     image = Image.open(image_name)
     # fake batch dimension required to fit network's input dimensions
     image = loader(image).unsqueeze(0) # 在axis=0方向上，增加一个维度
-    return image.to(device, torch.float) # performs Tensor dtype / device conversion
+    return image.to(device, torch.float) # move to device and conver to dtype
 
 
 style_img = image_loader("./images/picasso.jpg") # call 'image_loader' function
@@ -183,7 +183,10 @@ class ContentLoss(nn.Module):
         # to dynamically compute the gradient: this is a stated value,
         # not a variable. Otherwise the forward method of the criterion
         # will throw an error.
-        self.target = target.detach()
+
+        # return a new tensor, detached from the current graph, without
+        # computing its gradient, i.e., just a stated value
+        self.target = target.detach() 
 
     def forward(self, input):
         self.loss = F.mse_loss(input, self.target)
@@ -194,8 +197,7 @@ class ContentLoss(nn.Module):
 #    **Important detail**: although this module is named ``ContentLoss``, it
 #    is not a true PyTorch Loss function. If you want to define your content
 #    loss as a PyTorch Loss function, you have to create a PyTorch autograd function 
-#    to recompute/implement the GRADIENT manually in the ``backward``
-#    method.
+#    to recompute/implement the GRADIENT manually in the ``backward`` method.
 
 ######################################################################
 # Style Loss
