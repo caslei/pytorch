@@ -456,7 +456,7 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
             if run[0] % 50 == 0:
                 print("run {}:".format(run))
                 print('Style Loss : {:4f} Content Loss: {:4f}'.format(
-                    style_score.item(),  # 'item' performs a parameter update based on
+                    style_score.item(),  # 'step' performs a parameter update based on
                     content_score.item() # the current gradient and the update relu
                     ))
                 print()
@@ -467,7 +467,6 @@ def run_style_transfer(cnn, normalization_mean, normalization_std,
 
     # a last correction...
     input_img.data.clamp_(0, 1)
-
     return input_img
 
 
