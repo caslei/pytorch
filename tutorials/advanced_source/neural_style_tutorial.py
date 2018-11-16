@@ -279,7 +279,7 @@ cnn = models.vgg19(pretrained=True).features.to(device).eval()
 
 ######################################################################
 # Additionally, VGG networks are trained on images with each channel
-# normalized by mean=[0.485, 0.456, 0.406] and std=[0.229, 0.224, 0.225].
+# normalized by 'mean=[0.485, 0.456, 0.406]' and 'std=[0.229, 0.224, 0.225]'.
 # We will use them to normalize the image before sending it into the network.
 # 
 
@@ -299,7 +299,7 @@ class Normalization(nn.Module):
 
     def forward(self, img):
         # normalize img
-        return (img - self.mean) / self.std
+        return (img - self.mean) / self.std # intensity normalized image
 
 
 ######################################################################
@@ -315,17 +315,19 @@ class Normalization(nn.Module):
 content_layers_default = ['conv_4']
 style_layers_default = ['conv_1', 'conv_2', 'conv_3', 'conv_4', 'conv_5']
 
-def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
-                               style_img, content_img,
+def get_style_model_and_losses(cnn, 
+                               normalization_mean, 
+                               normalization_std,
+                               style_img, 
+                               content_img,
                                content_layers=content_layers_default,
                                style_layers=style_layers_default):
-    cnn = copy.deepcopy(cnn)
+    cnn = copy.deepcopy(cnn) # copy前后，两种完全独立，互不影响
 
     # normalization module
     normalization = Normalization(normalization_mean, normalization_std).to(device)
 
-    # just in order to have an iterable access to or list of content/syle
-    # losses
+    # just to have an iterable access to or list of content/syle losses
     content_losses = []
     style_losses = []
 
@@ -343,7 +345,7 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
             # The in-place version doesn't play very nicely with the ContentLoss
             # and StyleLoss we insert below. So we replace with out-of-place
             # ones here.
-            layer = nn.ReLU(inplace=False)
+            layer = nn.ReLU(inplace=False) # out-of-place
         elif isinstance(layer, nn.MaxPool2d):
             name = 'pool_{}'.format(i)
         elif isinstance(layer, nn.BatchNorm2d):
@@ -355,7 +357,7 @@ def get_style_model_and_losses(cnn, normalization_mean, normalization_std,
 
         if name in content_layers:
             # add content loss:
-            target = model(content_img).detach()
+            target = model(content_img).detach() # separate it from model
             content_loss = ContentLoss(target)
             model.add_module("content_loss_{}".format(i), content_loss)
             content_losses.append(content_loss)
