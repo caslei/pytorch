@@ -102,14 +102,15 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 imsize = 512 if torch.cuda.is_available() else 128  # use small size if no gpu
 
 loader = transforms.Compose([
-    transforms.Resize(imsize),  # scale imported image
-    transforms.ToTensor()])  # transform it into a torch tensor
+    transforms.Resize(imsize),  # scale imported image to ensure the same size
+    transforms.ToTensor(),      # transform it into a torch tensor
+    ])
 
 
 def image_loader(image_name):
     image = Image.open(image_name)
     # fake batch dimension required to fit network's input dimensions
-    image = loader(image).unsqueeze(0)
+    image = loader(image).unsqueeze(0) # 在axis=0方向上，增加一个维度
     return image.to(device, torch.float)
 
 
