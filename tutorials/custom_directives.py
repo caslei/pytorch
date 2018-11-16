@@ -45,7 +45,7 @@ class IncludeDirective(Directive):
 
             code_block = nodes.literal_block(text=text_no_docstring)
             return [code_block]
-        except FileNotFoundError as e:
+        except FileNotFoundError as e: # 这个地方可以用 as !!!
             print(e)
             return []
 
