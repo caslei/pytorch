@@ -162,7 +162,8 @@ print(b)
 import numpy as np
 a = np.ones(5)
 b = torch.from_numpy(a)
-np.add(a, 1, out=a)
+# np.add(a, 1, out=a)
+torch.add(b, 1, out=b) # 证明变量a,b共享同一片内存
 print(a)
 print(b)
 
@@ -174,6 +175,7 @@ print(b)
 # ------------
 #
 # Tensors can be moved onto any device using the ``.to`` method.
+# tensor可以通过'.to' 函数实现不同设备(cpu/gpu)之间转移
 
 # let us run this cell only if CUDA is available
 # We will use ``torch.device`` objects to move tensors in and out of GPU
@@ -184,3 +186,4 @@ if torch.cuda.is_available():
     z = x + y
     print(z)
     print(z.to("cpu", torch.double))       # ``.to`` can also change dtype together!
+    # '.to()'可以实现设备和数据类型的同时转换
