@@ -10,7 +10,7 @@ first neural network.
 
 
 The ``autograd`` package provides automatic differentiation for all operations
-on Tensors. It is a define-by-run framework, which means that your backprop is
+on Tensors. It is a 'define-by-run' framework, which means that your backprop is
 defined by how your code is run, and that every single iteration can be
 different.
 
@@ -20,7 +20,7 @@ Tensor
 --------
 
 ``torch.Tensor`` is the central class of the package. If you set its attribute
-``.requires_grad`` as ``True``, it starts to track all operations on it. When
+``.requires_grad`` as ``True``, IT STARTS TO TRACK ALL OPERATIONS ON IT. When
 you finish your computation you can call ``.backward()`` and have all the
 gradients computed automatically. The gradient for this tensor will be
 accumulated into ``.grad`` attribute.
@@ -55,6 +55,7 @@ import torch
 ###############################################################
 # Create a tensor and set requires_grad=True to track computation with it
 # 'requires_grad=True' 意味着：在以后的计算中要一直记录该变量的梯度变化
+# requires_grad默认值为False
 x = torch.ones(2, 2, requires_grad=True)
 print(x)
 
