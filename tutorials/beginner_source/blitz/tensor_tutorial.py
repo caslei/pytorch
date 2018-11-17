@@ -91,14 +91,14 @@ print(result)
 # Addition: in-place
 
 # adds x to y
-y.add_(x)
+y.add_(x) #在求解中直接改变y的值，即为in-place操作
 print(y)
 
 ###############################################################
 # .. note::
 #     Any operation that mutates a tensor in-place is post-fixed with an ``_``.
 #     For example: ``x.copy_(y)``, ``x.t_()``, will change ``x``.
-#
+#     # 所有in-place操作的函数都以'_'结尾
 # You can use standard NumPy-like indexing with all bells and whistles!
 
 print(x[:, 1])
