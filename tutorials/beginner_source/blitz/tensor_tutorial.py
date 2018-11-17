@@ -106,7 +106,7 @@ print(x[:, 1])
 ###############################################################
 # Resizing: If you want to resize/reshape tensor, you can use ``torch.view``:
 x = torch.randn(4, 4)
-y = x.view(16)
+y = x.view(16) # equal to 'reshape' funcation in numpy
 z = x.view(-1, 8)  # the size -1 is inferred from other dimensions
 print(x.size(), y.size(), z.size())
 
@@ -115,7 +115,7 @@ print(x.size(), y.size(), z.size())
 # Python number
 x = torch.randn(1)
 print(x)
-print(x.item())
+print(x.item()) # 'item'用于只有一个元素的tensor, 将其转换为python scalars
 
 ###############################################################
 # **Read later:**
