@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Autograd: Automatic Differentiation
+# 导数求解：自动差分求导
 ===================================
 
 Central to all neural networks in PyTorch is the ``autograd`` package.
@@ -53,6 +54,7 @@ import torch
 
 ###############################################################
 # Create a tensor and set requires_grad=True to track computation with it
+# 'requires_grad=True' 意味着：在以后的计算中要一直记录该变量的梯度变化
 x = torch.ones(2, 2, requires_grad=True)
 print(x)
 
