@@ -80,8 +80,8 @@ print(z, out)
 # flag in-place. The input flag defaults to ``False`` if not given.
 a = torch.randn(2, 2)
 a = ((a * 3) / (a - 1))
-print(a.requires_grad)
-a.requires_grad_(True)
+print(a.requires_grad) # '.requires_grad'是一个成员属性，不是函数
+a.requires_grad_(True) # '.requires_grad_()'是一个成员函数
 print(a.requires_grad)
 b = (a * a).sum()
 print(b.grad_fn)
