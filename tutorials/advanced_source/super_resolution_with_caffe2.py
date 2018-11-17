@@ -23,7 +23,7 @@ import io
 import numpy as np
 
 from torch import nn
-import torch.utils.model_zoo as model_zoo
+import torch.utils.model_zoo as model_zoo # model zoo!!!!
 import torch.onnx
 
 
@@ -52,7 +52,8 @@ class SuperResolutionNet(nn.Module):
         self.conv2 = nn.Conv2d(64, 64, (3, 3), (1, 1), (1, 1))
         self.conv3 = nn.Conv2d(64, 32, (3, 3), (1, 1), (1, 1))
         self.conv4 = nn.Conv2d(32, upscale_factor ** 2, (3, 3), (1, 1), (1, 1))
-        self.pixel_shuffle = nn.PixelShuffle(upscale_factor)
+        self.pixel_shuffle = nn.PixelShuffle(upscale_factor) 
+        # rearrange elements in a tensor of shape (B, C*r^2, H, W) to (C, H*r, W*r)
 
         self._initialize_weights()
 
@@ -86,8 +87,8 @@ batch_size = 1    # just a random number
 
 # Initialize model with the pretrained weights
 map_location = lambda storage, loc: storage
-if torch.cuda.is_available():
-    map_location = None
+if torch.cuda.is_available(): map_location = None
+
 torch_model.load_state_dict(model_zoo.load_url(model_url, map_location=map_location))
 
 # set the train mode to false since we will only run the forward pass.
