@@ -16,7 +16,7 @@ Getting Started
 Tensors
 ^^^^^^^
 
-Tensors are similar to NumPy’s ndarrays, with the addition being that
+Tensors are similar to NumPy's ndarrays, with the addition being that
 Tensors can also be used on a GPU to accelerate computing.
 """
 
@@ -44,7 +44,7 @@ print(x)
 ###############################################################
 # Construct a tensor directly from data:
 
-x = torch.tensor([5.5, 3])
+x = torch.tensor([5.5, 3]) # different from torch.Tensor()
 print(x)
 
 ###############################################################
