@@ -99,7 +99,7 @@ out.backward()
 # print gradients d(out)/dx
 #
 
-print(x.grad)
+print(x.grad) # x.grad本质上是对变量x的求导：即d(out)/dx
 
 ###############################################################
 # You should have got a matrix of ``4.5``. Let’s call the ``out``
@@ -136,7 +136,7 @@ print(x.grad)
 print(x.requires_grad)
 print((x ** 2).requires_grad)
 
-with torch.no_grad():
+with torch.no_grad(): # 不再保留或者跟踪每次求解运算中梯度的计算
 	print((x ** 2).requires_grad)
 
 ###############################################################
