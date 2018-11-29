@@ -7,7 +7,7 @@ Neural networks can be constructed using the ``torch.nn`` package.
 
 Now that you had a glimpse of ``autograd``, ``nn`` depends on
 ``autograd`` to define models and differentiate them.
-An ``nn.Module`` contains layers, and a method ``forward(input)``\ that
+An ``nn.Module`` contains layers, and a method ``forward(input)`` that
 returns the ``output``.
 
 For example, look at this network that classifies digit images:
@@ -23,8 +23,7 @@ output.
 
 A typical training procedure for a neural network is as follows:
 
-- Define the neural network that has some learnable parameters (or
-  weights)
+- Define the neural network that has some learnable parameters (or weights)
 - Iterate over a dataset of inputs
 - Process input through the network
 - Compute the loss (how far is the output from being correct)
@@ -52,7 +51,7 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(6, 16, 5)
         # an affine operation: y = Wx + b
         # torch.nn.Linear(in_features, out_features, bias=True)
-        self.fc1 = nn.Linear(16*5*5, 120)
+        self.fc1 = nn.Linear(16*5*5, 120) # 为啥不是16而是16*5*5？？？
         self.fc2 = nn.Linear(120, 84)
         self.fc3 = nn.Linear(84, 10)
 
