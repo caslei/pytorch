@@ -515,7 +515,7 @@ class _DataLoaderIter(object):
     #     processing indices already in `index_queue` if we are already shutting
     #     down.
 
-    def __init__(self, loader):
+    def __init__(self, loader): # => class DataLoader(object)
         self.dataset = loader.dataset
         self.collate_fn = loader.collate_fn
         self.batch_sampler = loader.batch_sampler
@@ -612,7 +612,7 @@ class _DataLoaderIter(object):
     def __next__(self):
         if self.num_workers == 0:  # same-process loading
             indices = next(self.sample_iter)  # may raise StopIteration
-            batch = self.collate_fn([self.dataset[i] for i in indices])
+            batch = self.collate_fn([self.dataset[i] for i in indices]) #=======get data for index ============
             if self.pin_memory:
                 batch = pin_memory_batch(batch)
             return batch
@@ -817,7 +817,7 @@ class DataLoader(object):
         super(DataLoader, self).__setattr__(attr, val)
 
     def __iter__(self):
-        return _DataLoaderIter(self)
+        return _DataLoaderIter(self) # call '_DataLoaderIter' class
 
     def __len__(self):
         return len(self.batch_sampler)
