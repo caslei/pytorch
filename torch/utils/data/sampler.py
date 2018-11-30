@@ -158,12 +158,12 @@ class BatchSampler(Sampler):
 
     def __iter__(self):
         batch = []
-        for idx in self.sampler:
+        for idx in self.sampler: # sampler得到所有的样本index
             batch.append(idx)
             if len(batch) == self.batch_size:
-                yield batch
+                yield batch # 返回 index for batch
                 batch = []
-        if len(batch) > 0 and not self.drop_last:
+        if len(batch) > 0 and not self.drop_last: # drop_last默认为False
             yield batch
 
     def __len__(self):
