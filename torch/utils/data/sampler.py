@@ -31,7 +31,7 @@ class SequentialSampler(Sampler):
         self.data_source = data_source
 
     def __iter__(self):
-        return iter(range(len(self.data_source)))
+        return iter(range(len(self.data_source))) # sequential顺序采样
 
     def __len__(self):
         return len(self.data_source)
@@ -69,8 +69,9 @@ class RandomSampler(Sampler):
     def __iter__(self):
         n = len(self.data_source)
         if self.replacement:
+            # 在n个样本中，随机取size个样本，并且同一样本可重复出现
             return iter(torch.randint(high=n, size=(self.num_samples,), dtype=torch.int64).tolist())
-        return iter(torch.randperm(n).tolist())
+        return iter(torch.randperm(n).tolist()) # 在n个样本中，选取所有的样本并且不出现重复样本
 
     def __len__(self):
         return len(self.data_source)
