@@ -798,6 +798,7 @@ class DataLoader(object):
 
         if batch_sampler is None:
             if sampler is None:
+                # 两种不同的采样方式获取batch
                 if shuffle:
                     sampler = RandomSampler(dataset)
                 else:
