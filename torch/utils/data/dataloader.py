@@ -612,7 +612,8 @@ class _DataLoaderIter(object):
     def __next__(self):
         if self.num_workers == 0:  # same-process loading
             indices = next(self.sample_iter)  # may raise StopIteration
-            batch = self.collate_fn([self.dataset[i] for i in indices]) #=======get data for index ============
+            #=======self.dataset[i] => get data for index ============
+            batch = self.collate_fn([self.dataset[i] for i in indices])
             if self.pin_memory:
                 batch = pin_memory_batch(batch)
             return batch
