@@ -184,7 +184,7 @@ def _pin_memory_loop(in_queue, out_queue, device_id, done_event):
 numpy_type_map = {
     'float64': torch.DoubleTensor,
     'float32': torch.FloatTensor,
-    'float16': torch.HalfTensor,
+    'float16': torch.HalfTensor, # half tensor???
     'int64': torch.LongTensor,
     'int32': torch.IntTensor,
     'int16': torch.ShortTensor,
