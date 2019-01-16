@@ -109,8 +109,11 @@ def _worker_loop(dataset, index_queue, data_queue, done_event, collate_fn, seed,
         _set_worker_signal_handlers()
 
         torch.set_num_threads(1)
-        random.seed(seed)
+
+        # 设置随机发生器的起始种子点
+        random.seed(seed) # ================
         torch.manual_seed(seed)
+        # ================
 
         data_queue.cancel_join_thread()
 
@@ -135,6 +138,7 @@ def _worker_loop(dataset, index_queue, data_queue, done_event, collate_fn, seed,
                 continue
             idx, batch_indices = r
             try:
+                # 'class' dataset 的调用： dataset.__getitem__(i) ==> dataset[i]
                 samples = collate_fn([dataset[i] for i in batch_indices])
             except Exception:
                 # It is important that we don't store exc_info in a variable,
@@ -516,9 +520,9 @@ class _DataLoaderIter(object):
     #     down.
 
     def __init__(self, loader): # => class DataLoader(object)
-        self.dataset = loader.dataset
+        self.dataset = loader.dataset             # 'dataset' class
         self.collate_fn = loader.collate_fn
-        self.batch_sampler = loader.batch_sampler
+        self.batch_sampler = loader.batch_sampler # 'batch_sampler' class
         self.num_workers = loader.num_workers
         self.pin_memory = loader.pin_memory and torch.cuda.is_available()
         self.timeout = loader.timeout
@@ -804,7 +808,7 @@ class DataLoader(object):
                     sampler = RandomSampler(dataset)
                 else:
                     sampler = SequentialSampler(dataset)
-                    
+
             batch_sampler = BatchSampler(sampler, batch_size, drop_last)
 
         self.sampler = sampler
