@@ -164,6 +164,7 @@ class BatchSampler(Sampler):
             if len(batch) == self.batch_size:
                 yield batch # 返回 index for batch
                 batch = []
+            # len(batch) != self.batch_size, 进入由self.drop_last控制的语句
         if len(batch) > 0 and not self.drop_last: # drop_last默认为False
             yield batch
 
