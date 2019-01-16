@@ -804,6 +804,7 @@ class DataLoader(object):
                     sampler = RandomSampler(dataset)
                 else:
                     sampler = SequentialSampler(dataset)
+                    
             batch_sampler = BatchSampler(sampler, batch_size, drop_last)
 
         self.sampler = sampler
