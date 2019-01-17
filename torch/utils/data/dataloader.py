@@ -139,6 +139,7 @@ def _worker_loop(dataset, index_queue, data_queue, done_event, collate_fn, seed,
             idx, batch_indices = r
             try:
                 # 'class' dataset 的调用： dataset.__getitem__(i) ==> dataset[i]
+                # 可以在函数__getitem__(i)中进行更多的图像操作(如，crop和resize等)
                 samples = collate_fn([dataset[i] for i in batch_indices])
             except Exception:
                 # It is important that we don't store exc_info in a variable,
@@ -549,8 +550,8 @@ class _DataLoaderIter(object):
                 index_queue = multiprocessing.Queue()
                 index_queue.cancel_join_thread()
                 w = multiprocessing.Process(
-                    target=_worker_loop,
-                    args=(self.dataset, index_queue,
+                    target=_worker_loop,              # 函数名
+                    args=(self.dataset, index_queue,  # 函数_worker_loop需要的参数
                           self.worker_result_queue, self.done_event,
                           self.collate_fn, base_seed + i,
                           self.worker_init_fn, i))
@@ -616,6 +617,7 @@ class _DataLoaderIter(object):
     def __next__(self):
         if self.num_workers == 0:  # same-process loading
             indices = next(self.sample_iter)  # may raise StopIteration
+            
             #=======self.dataset[i] => get data for index ============
             batch = self.collate_fn([self.dataset[i] for i in indices])
             if self.pin_memory:
